@@ -12,7 +12,7 @@ export async function createAirport(data: any): Promise<void> {
 
 export async function updateAirport(id: number, data: any): Promise<void> {
     const headers = await getAuthHeaders();
-    await axiosInstance.patch(`/admin/airports/${id}`, data, { headers });
+    await axiosInstance.put(`/admin/airports/${id}`, data, { headers });
 }
 
 export async function deleteAirport(id: number): Promise<void> {

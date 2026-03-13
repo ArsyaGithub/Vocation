@@ -7,13 +7,25 @@ export const getAirlines = async (page: number = 1, limit: number = 10) => {
 
 export async function createAirline(data: any): Promise<void> {
   const headers = await getAuthHeaders();
-  await axiosInstance.post("/admin/airlines", data, { headers });
-}
+   const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("code", data.code);
+    if(data.logo instanceof File){
+        formData.append("logo", data.logo); 
+    }
+    await axiosInstance.post("/admin/airlines", formData, { headers: { ...headers, "Content-Type": "multipart/form-data" } });
+  }
 
 export async function updateAirline(id: number, data: any): Promise<void> {
   const headers = await getAuthHeaders();
-  await axiosInstance.patch(`/admin/airlines/${id}`, data, { headers });
-}
+  const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("code", data.code);
+    if(data.logo instanceof File){
+        formData.append("logo", data.logo); 
+    }
+    await axiosInstance.put(`/admin/airlines/${id}`, formData, { headers: { ...headers, "Content-Type": "multipart/form-data" } });
+  }
 
 export async function deleteAirlines(id: number) {
   const headers = await getAuthHeaders();    

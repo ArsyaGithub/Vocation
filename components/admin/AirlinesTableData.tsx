@@ -41,11 +41,17 @@ export function AirlinesTableData() {
   const [totalPages, setTotalPages] = useState(1)
   const limit = 10
 
-  const airlineFields: FormField[] = [
-    { name: "name", label: "Nama Maskapai", placeholder: "Contoh: Garuda Indonesia", required: true },
-    { name: "code", label: "Kode IATA", placeholder: "Contoh: GA", required: true },
-    { name: "logo_url", label: "URL Logo", type: "url", placeholder: "https://example.com/logo.png" },
-  ]
+  // Di dalam AirlinesTableData.tsx
+const airlineFields: FormField[] = [
+  { name: "name", label: "Nama Maskapai", placeholder: "Contoh: Garuda Indonesia", required: true },
+  { name: "code", label: "Kode IATA", placeholder: "Contoh: GA", required: true },
+  { 
+    name: "logo", 
+    label: "Logo Maskapai", 
+    type: "file", // Ganti dari "url" ke "file"
+    placeholder: "Pilih gambar logo" 
+  },
+]
 
   const fetchData = useCallback(async () => {
     setIsLoading(true)
