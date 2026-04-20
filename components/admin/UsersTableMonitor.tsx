@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { getUserAdmin } from "@/lib/api/MonitorApi"
+import { getUserAdmin, updateUser } from "@/lib/api/MonitorApi"
+import { UpsertForm, FormField } from "./UpsertForm"
 
 export function UserDataTable() {
   const [users, setUsers] = useState<any[]>([])
@@ -21,7 +22,7 @@ export function UserDataTable() {
     const fetchData = async () => {
       try {
         const response = await getUserAdmin()
-        setUsers(response.data) 
+        setUsers(response.data)
       } catch (error) {
         console.error("Gagal mengambil data user:", error)
       } finally {
@@ -68,7 +69,34 @@ export function UserDataTable() {
                   })}
                 </TableCell>
                 <TableCell className="text-right space-x-2">
-                  <Button variant="ghost" size="sm">Edit</Button>
+                  <UpsertForm
+                    title="User Role"
+                    description="Update role pengguna"
+                    initialData={user}
+                    triggerVariant="icon"
+                    fields={[
+                      {
+                        name: "role",
+                        label: "Role",
+                        type: "select",
+                        required: true,
+                        options: [
+                          { label: "User", value: "user" },
+                          { label: "Admin", value: "admin" },
+                          { label: "Super Admin", value: "super_admin" },
+                        ],
+                      },
+                    ]}
+                    onSubmit={async (data) => {
+                      await updateUser(user.id, {
+                        role: data.role,
+                      })
+                    }}
+                    onSuccess={async () => {
+                      const res = await getUserAdmin()
+                      setUsers(res.data)
+                    }}
+                  />
                   <Button variant="destructive" size="sm">Suspend</Button>
                 </TableCell>
               </TableRow>

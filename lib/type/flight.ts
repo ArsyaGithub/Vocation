@@ -30,6 +30,16 @@ export interface ApiResponse<T> {
   };
 }
 
+export interface FlightFilters {
+  origin?: string;
+  destination?: string;
+  date?: string;
+  page?: number;
+  limit?: number;
+  sort_by?: string;
+  order?: string;
+}
+
 export interface Flight {
   id: number
   airline_id?: number

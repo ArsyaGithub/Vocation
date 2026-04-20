@@ -1,8 +1,9 @@
 import axiosInstance from "../axios";
-import { ApiResponse, Flight } from "@/lib/type/flight";
+import { ApiResponse, Flight, FlightFilters } from "@/lib/type/flight";
 import { getAuthHeaders } from "../getAuth";
-export const getFlights = async (page: number = 1, limit: number = 10) => {
-  const response = await axiosInstance.get(`/flights?page=${page}&limit=${limit}`);
+export const getFlights = async (filters: FlightFilters) => {
+  const query = new URLSearchParams(filters as Record<string, string>).toString();
+  const response = await axiosInstance.get(`/flights?${query}`);
   return response.data; // Mengembalikan { success, data, meta }
 };
 export const getTickets = getFlights
@@ -28,3 +29,8 @@ export async function updateFlight(id: number, data: any): Promise<void> {
   await axiosInstance.put(`/admin/flights/${id}`, data, { headers })
 }
 
+export async function getFlightsSearch(params: any) {
+  const query = new URLSearchParams(params).toString();
+  const res = await axiosInstance.get(`/flight/search?${query}`);
+  return res.data;
+}
